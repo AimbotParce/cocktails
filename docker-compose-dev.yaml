@@ -12,6 +12,8 @@ services:
       - ./cocktails-web:/app
       - /app/node_modules
       - /app/.next
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:5000
 
   api:
     build: ./cocktails-api
