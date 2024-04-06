@@ -1,0 +1,45 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: ./cocktails-web
+      dockerfile: Dockerfile.dev
+    container_name: cocktails-web-dev
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./cocktails-web:/app
+
+  api:
+    build: ./cocktails-api
+    container_name: cocktails-api-dev
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./cocktails-api:/app
+    depends_on:
+      - db
+    environment:
+      - API_PORT=5432
+      - API_HOST=localhost
+      - DATABASE_URL=postgresql://cocktails:lojfR21hDCzU6uCtg6q4@db:5432/cocktails
+      - USERS_DATABASE_URL=postgresql://cocktails:lojfR21hDCzU6uCtg6q4@db:5431/users
+
+  db:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: cocktails
+      POSTGRES_PASSWORD: lojfR21hDCzU6uCtg6q4
+      POSTGRES_DB: cocktails
+    ports:
+      - "5432:5432"
+
+  users:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: cocktails
+      POSTGRES_PASSWORD: lojfR21hDCzU6uCtg6q4
+      POSTGRES_DB: users
+    ports:
+      - "5431:5432"
