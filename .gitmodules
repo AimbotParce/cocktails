@@ -1,0 +1,6 @@
+[submodule "cocktails-api"]
+	path = cocktails-api
+	url = git@github.com:AimbotParce/cocktails-api.git
+[submodule "cocktails-web"]
+	path = cocktails-web
+	url = git@github.com:AimbotParce/cocktails-web.git
