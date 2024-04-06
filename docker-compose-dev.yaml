@@ -20,7 +20,7 @@ services:
       - ./cocktails-api:/app
     depends_on:
       - db
-    command: uvicorn app:main --reload --host 0.0.0.0 --port 5000
+    command: uvicorn app:app --reload --host 0.0.0.0 --port 5000
     environment:
       - DATABASE_URL=postgresql://cocktails:lojfR21hDCzU6uCtg6q4@db:5432/cocktails
       - USERS_DATABASE_URL=postgresql://cocktails:lojfR21hDCzU6uCtg6q4@db:5431/users
