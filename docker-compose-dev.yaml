@@ -12,10 +12,11 @@ services:
       - ./cocktails-web:/app
       - /app/node_modules
       - /app/.next
-    environment:
-      - NEXT_PUBLIC_API_URL=http://localhost:5000
-      - WATCHPACK_POLLING=true
-      - LDAP_URI=
+    env_file:
+      - web.env
+    depends_on:
+      - api
+      - ldap
 
   api:
     build: ./cocktails-api
@@ -25,36 +26,32 @@ services:
     volumes:
       - ./cocktails-api:/app
     depends_on:
-      - users
+      - ldap
       - db
     command: flask run --host 0.0.0.0 --port 5000 --reload
-    environment:
-      - DATABASE_URL=postgresql://cocktails:lojfR21hDCzU6uCtg6q4@db:5432/cocktails
-      - USERS_DATABASE_URL=postgresql://cocktails:lojfR21hDCzU6uCtg6q4@db:5431/users
+    env_file:
+      - api.env
     restart: unless-stopped
 
   db:
     image: postgres:latest
-    environment:
-      POSTGRES_USER: cocktails
-      POSTGRES_PASSWORD: lojfR21hDCzU6uCtg6q4
-      POSTGRES_DB: cocktails
+    env_file:
+      - db.env
     ports:
       - "5432:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
 
-  users:
-    image: postgres:latest
-    environment:
-      POSTGRES_USER: cocktails
-      POSTGRES_PASSWORD: lojfR21hDCzU6uCtg6q4
-      POSTGRES_DB: users
+  ldap:
+    image: bitnami/openldap:latest
     ports:
-      - "5431:5432"
+      - '1389:1389'
+      - '1636:1636'
+    env_file:
+      - ldap.env
     volumes:
-      - users_data:/var/lib/postgresql/data
+      - 'ldap_data:/bitnami/openldap'
 
 volumes:
   db_data:
-  users_data:
+  ldap_data:
