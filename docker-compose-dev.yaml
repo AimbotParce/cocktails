@@ -58,6 +58,15 @@ services:
     volumes:
       - 'ldap_data:/bitnami/openldap'
 
+  ldapadmin:
+    image: osixia/phpldapadmin:latest
+    ports:
+      - '8080:80'
+    env_file:
+      - ldapadmin.env
+    depends_on:
+      - ldap
+
 volumes:
   db_data:
   ldap_data:
