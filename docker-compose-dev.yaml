@@ -57,6 +57,8 @@ services:
     stdin_open: true
     volumes:
       - ldap_data:/var/lib/ldap
+      - ldap_slapd:/etc/ldap/slapd.d
+      - ldap_certs:/container/service/slapd/assets/certs/
     ports:
       - "389:389"
       - "636:636"
@@ -75,3 +77,5 @@ services:
 volumes:
   db_data:
   ldap_data:
+  ldap_slapd:
+  ldap_certs:
