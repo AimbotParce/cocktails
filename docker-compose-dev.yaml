@@ -49,14 +49,19 @@ services:
       start_period: 1s
 
   ldap:
-    image: bitnami/openldap:latest
-    ports:
-      - '1389:1389'
-      - '1636:1636'
+    image: osixia/openldap:latest
+    container_name: ldap
     env_file:
-      - ldap.env
+      ldap.env
+    tty: true
+    stdin_open: true
     volumes:
-      - 'ldap_data:/bitnami/openldap'
+      - ldap_data:/var/lib/ldap
+    ports:
+      - "389:389"
+      - "636:636"
+    domainname: "parcerisa.xyz" # important: same as hostname
+    hostname: "parcerisa.xyz"
 
   ldapadmin:
     image: osixia/phpldapadmin:latest
