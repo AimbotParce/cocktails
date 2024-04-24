@@ -15,6 +15,7 @@ services:
     environment:
       - NEXT_PUBLIC_API_URL=http://localhost:5000
       - WATCHPACK_POLLING=true
+      - LDAP_URI=
 
   api:
     build: ./cocktails-api
@@ -40,6 +41,8 @@ services:
       POSTGRES_DB: cocktails
     ports:
       - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
 
   users:
     image: postgres:latest
@@ -49,3 +52,9 @@ services:
       POSTGRES_DB: users
     ports:
       - "5431:5432"
+    volumes:
+      - users_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
+  users_data:
